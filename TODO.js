@@ -1,6 +1,7 @@
 const InProgress = 'In Progress';
 const Done = 'Done';
-const TODO = 'To Do'
+const TODO = 'To Do';
+let idCount = 2;
 
 const list = [
     {
@@ -17,71 +18,79 @@ const list = [
     }
 ]
 
-function changeStatus(task, newStatus) {
-    list[task].status = newStatus
+function changeStatus(id, newStatus) {
+    let user = list.findIndex(function (item) {
+        return item.id === id
+    })
+    if (user !== -1){
+        list[user].status = newStatus
+    }
 }
 
-function changePriority(task, newPriority) {
-    list[task].priority = newPriority
+function changePriority(id, newPriority) {
+    let user = list.findIndex(function (item) {
+        return item.id === id
+    })
+    if (user !== -1){
+        list[user].priority = newPriority
+    }
 }
 
-function addTask(nameTask) {
-    if (!nameTask){
+function addTask(nameTask, status = TODO, priority = '-') {
+    if (!nameTask) {
         return
     }
     list.push({
-        id: list.length+1,
+        id: ++idCount,
         name: nameTask,
-        status: TODO,
-        priority: 'low'
+        status: status,
+        priority: priority,
     })
 }
 
-function deleteTask(task) {
-    list.splice(task - 0, 1)
+function deleteTask(id) {
+    let user = list.findIndex(function (item) {
+        return item.id === id
+    })
+    list.splice(user, 1)
 }
-
 
 function showList() {
-    let i
-
-    console.log(`${TODO}:`)
-    let taskTodo = list.filter(function (item) {
-        return item.status === TODO
-    })
-    taskTodo.forEach(function (item) {
-        console.log(item.name)
-        i++
+    console.log(`\n${TODO}:`)
+    list.forEach(function (item) {
+        if (item.status === TODO) {
+            console.log(item.name)
+        }
     })
 
-    console.log(`${InProgress}:`)
-    let taskInProgress = list.filter(function (item) {
-        return item.status === Done
-    })
-    taskInProgress.forEach(function (item) {
-        console.log(item.name)
-        i++
+    console.log(`\n${InProgress}:`)
+    list.forEach(function (item) {
+        if (item.status === InProgress) {
+            console.log(item.name)
+        }
     })
 
-    console.log(`${Done}:`)
-    let taskDone = list.filter(function (item) {
-        return item.status === Done
+    console.log(`\n${Done}:`)
+    list.forEach(function (item) {
+        if (item.status === Done) {
+            console.log(item.name)
+        }
     })
-    taskDone.forEach(function (item) {
-        console.log(item.name)
-        i++
+
+    console.log(`\nOther:`)
+    list.forEach(function (item) {
+        if (item.status == !((TODO) || (InProgress) || (Done))) {
+            console.log(item.name)
+        }
     })
 }
 
-deleteTask(1)
-changeStatus(0, Done)
 addTask('1')
-addTask('2')
-addTask('3')
-changeStatus(3, Done)
+addTask('2', '')
+addTask('three', 'medium')
 deleteTask(3)
-
-changePriority(0, 'high')
+changeStatus(2, InProgress)
+changePriority(4,'low')
 
 console.log(list)
 showList()
