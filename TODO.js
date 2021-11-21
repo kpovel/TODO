@@ -80,7 +80,7 @@ function showList() {
 
 addTask('1')
 addTask('2', '')
-addTask('three', 'medium')
+addTask('three', 'high')
 deleteTask(3)
 changeStatus(2, InProgress)
 changePriority(4,'low')
